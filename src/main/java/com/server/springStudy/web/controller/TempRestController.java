@@ -2,10 +2,12 @@ package com.server.springStudy.web.controller;
 
 import com.server.springStudy.apiPayload.ApiResponse;
 import com.server.springStudy.converter.TempConverter;
-import com.server.springStudy.web.dto.TempResponseDTO;
+import com.server.springStudy.service.TempService.TempQueryService;
+import com.server.springStudy.web.dto.TempResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
@@ -65,6 +67,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TempRestController {
 
+    // ** 구현체 아닌 인터페이스 작성 (컨트롤러는 인터페이스를 의존하며 실제 인터페이스에 대한 구체화 클래스는 Springboot의 의존성 주입 이용)
+    private final TempQueryService tempQueryService;
+
     @GetMapping("/")
     // 현재는 <String> 으로 뒀지만 onSuccess 타입을 제네릭스로 했으므로 DTO나 다른 클래스도 가능
     public ApiResponse<String> stringTest() {
@@ -73,9 +78,15 @@ public class TempRestController {
     }
 
     @GetMapping("/test")
-    // 현재는 <String> 으로 뒀지만 onSuccess 타입을 제네릭스로 했으므로 DTO나 다른 클래스도 가능
-    public ApiResponse<TempResponseDTO.TempTestDTO> test() {
+    public ApiResponse<TempResponse.TempTestDTO> test() {
 
         return ApiResponse.onSuccess(TempConverter.toTempTestDTO());
+    }
+
+    @GetMapping("/exception")
+    public ApiResponse<TempResponse.TempExceptionDTO> exceptionAPI(@RequestParam Integer flag){
+
+        tempQueryService.CheckFlag(flag);
+        return ApiResponse.onSuccess(TempConverter.toTempExceptionDTO(flag));
     }
 }
