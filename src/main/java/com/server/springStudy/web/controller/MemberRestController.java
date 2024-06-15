@@ -2,7 +2,7 @@ package com.server.springStudy.web.controller;
 
 import com.server.springStudy.apiPayload.ApiResponse;
 import com.server.springStudy.domain.entity.Member;
-import com.server.springStudy.service.MemberServie.MemberCommandService;
+import com.server.springStudy.service.memberServie.MemberCommandService;
 import com.server.springStudy.web.dto.member.MemberJoinRequest;
 import com.server.springStudy.web.dto.member.MemberJoinResponse;
 import jakarta.validation.Valid;

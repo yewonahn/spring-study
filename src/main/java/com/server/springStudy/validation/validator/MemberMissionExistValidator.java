@@ -1,6 +1,6 @@
 package com.server.springStudy.validation.validator;
 
-import com.server.springStudy.repository.MemberMissionRepository;
+import com.server.springStudy.service.memberServie.MemberQueryService;
 import com.server.springStudy.validation.annotation.AlreadyExistMemberMission;
 import com.server.springStudy.web.dto.store.MemberMissionCreateRequest;
 import jakarta.validation.ConstraintValidator;
@@ -14,7 +14,7 @@ import static com.server.springStudy.apiPayload.code.status.ErrorStatus.IS_ALREA
 @RequiredArgsConstructor
 public class MemberMissionExistValidator implements ConstraintValidator<AlreadyExistMemberMission, MemberMissionCreateRequest> {
 
-    private final MemberMissionRepository memberMissionRepository;
+    private final MemberQueryService memberQueryService;
 
     @Override
     public void initialize(AlreadyExistMemberMission constraintAnnotation) {
@@ -24,13 +24,13 @@ public class MemberMissionExistValidator implements ConstraintValidator<AlreadyE
     @Override
     public boolean isValid(MemberMissionCreateRequest request, ConstraintValidatorContext context) {
 
-        boolean isAlreadyChallenging = memberMissionRepository.existsByMemberIdAndMissionId(request.memberId(), request.missionId());
+        boolean isAlreadyOnGoing = memberQueryService.isMemberMissionAlreadyExists(request.memberId(), request.missionId());
 
-        if (isAlreadyChallenging) {
+        if (isAlreadyOnGoing) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(IS_ALREADY_ON_GOING.toString()).addConstraintViolation();
         }
 
-        return !isAlreadyChallenging;
+        return !isAlreadyOnGoing;
     }
 }

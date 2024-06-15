@@ -1,4 +1,4 @@
-package com.server.springStudy.service.MemberServie;
+package com.server.springStudy.service.memberServie;
 
 import com.server.springStudy.apiPayload.exception.handler.FoodCategoryHandler;
 import com.server.springStudy.converter.MemberConverter;

@@ -2,7 +2,7 @@ package com.server.springStudy.web.controller;
 
 import com.server.springStudy.apiPayload.ApiResponse;
 import com.server.springStudy.converter.TempConverter;
-import com.server.springStudy.service.TempService.TempQueryService;
+import com.server.springStudy.service.tempService.TempQueryService;
 import com.server.springStudy.web.dto.temp.TempResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
