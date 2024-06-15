@@ -13,7 +13,7 @@ public class StoreQueryServiceImpl implements StoreQueryService {
     private final StoreRepository storeRepository;
 
     @Override
-    public Boolean isStoreExist(Long storeId) {
+    public Boolean checkStoreExists(Long storeId) {
         return storeRepository.existsById(storeId);
     }
 }

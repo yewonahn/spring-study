@@ -24,7 +24,7 @@ public class MemberMissionExistValidator implements ConstraintValidator<AlreadyE
     @Override
     public boolean isValid(MemberMissionCreateRequest request, ConstraintValidatorContext context) {
 
-        boolean isAlreadyOnGoing = memberQueryService.isMemberMissionAlreadyExists(request.memberId(), request.missionId());
+        boolean isAlreadyOnGoing = memberQueryService.checkMemberMissionExists(request.memberId(), request.missionId());
 
         if (isAlreadyOnGoing) {
             context.disableDefaultConstraintViolation();
