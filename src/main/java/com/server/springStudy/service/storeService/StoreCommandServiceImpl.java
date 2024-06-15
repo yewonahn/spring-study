@@ -51,12 +51,10 @@ public class StoreCommandServiceImpl implements StoreCommandService {
     @Override
     public Mission createMission(Long storeId, MissionCreateRequest request) {
 
-        Mission newMission = MissionConverter.toMission(request);
-
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new StoreHandler(STORE_NOT_FOUND));
 
-        newMission.setStore(store);
+        Mission newMission = MissionConverter.toMission(store, request);
 
         return missionRepository.save(newMission);
     }
