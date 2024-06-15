@@ -1,6 +1,7 @@
 package com.server.springStudy.service.memberServie;
 
 import com.server.springStudy.repository.MemberMissionRepository;
+import com.server.springStudy.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,9 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberQueryServiceImpl implements MemberQueryService {
 
     private final MemberMissionRepository memberMissionRepository;
+    private final MemberRepository memberRepository;
 
     @Override
-    public Boolean isMemberMissionAlreadyExists(Long memberId, Long missionId) {
+    public Boolean checkMemberMissionExists(Long memberId, Long missionId) {
         return memberMissionRepository.existsByMemberIdAndMissionId(memberId, missionId);
+    }
+
+    @Override
+    public Boolean checkMemberExists(Long memberId) {
+        return memberRepository.existsById(memberId);
     }
 }
