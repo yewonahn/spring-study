@@ -36,4 +36,7 @@ public class Store extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "region_id")
     private Region region;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<Review> reviewList = new ArrayList<>();
 }

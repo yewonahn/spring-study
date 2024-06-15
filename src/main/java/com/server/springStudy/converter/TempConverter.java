@@ -1,6 +1,6 @@
 package com.server.springStudy.converter;
 
-import com.server.springStudy.web.dto.TempResponse;
+import com.server.springStudy.web.dto.temp.TempResponse;
 
 public class TempConverter {
 

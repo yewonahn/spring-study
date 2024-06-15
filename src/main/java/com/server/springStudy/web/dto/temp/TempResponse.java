@@ -1,4 +1,4 @@
-package com.server.springStudy.web.dto;
+package com.server.springStudy.web.dto.temp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
