@@ -32,31 +32,19 @@ public class StoreCommandServiceImpl implements StoreCommandService {
     @Override
     public Review createReview(Long memberId, Long storeId, ReviewCreateRequest request) {
 
-        Review newReview = ReviewConverter.toCreateReview(request);
-
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberHandler(MEMBER_NOT_FOUND));
 
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new StoreHandler(STORE_NOT_FOUND));
 
-        newReview.setMember(member);
-        newReview.setStore(store);
-
-        return reviewRepository.save(newReview);
-    }
-
-    @Override
-    public List<ReviewImage> createReviewImage(Review review, ReviewCreateRequest request) {
+        Review newReview = ReviewConverter.toCreateReview(member, store, request);
 
         List<ReviewImage> reviewImageList = ReviewImageConverter.toReviewImageList(request.imageUrl());
-
-        reviewImageList.forEach(reviewImage -> {
-            reviewImage.setReview(review);
-            reviewImageRepository.save(reviewImage);
+        reviewImageList.forEach(reviewImage -> {reviewImage.setReview(newReview);
         });
 
-        return reviewImageList;
+        return reviewRepository.save(newReview);
     }
 
     @Override

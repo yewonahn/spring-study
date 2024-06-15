@@ -3,7 +3,6 @@ package com.server.springStudy.web.controller;
 import com.server.springStudy.apiPayload.ApiResponse;
 import com.server.springStudy.domain.entity.Mission;
 import com.server.springStudy.domain.entity.Review;
-import com.server.springStudy.domain.entity.ReviewImage;
 import com.server.springStudy.service.storeService.StoreCommandService;
 import com.server.springStudy.web.dto.store.MissionCreateRequest;
 import com.server.springStudy.web.dto.store.MissionCreateResponse;
@@ -11,10 +10,10 @@ import com.server.springStudy.web.dto.store.ReviewCreateRequest;
 import com.server.springStudy.web.dto.store.ReviewCreateResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/store")
@@ -26,13 +25,13 @@ public class StoreRestController {
     public ApiResponse<ReviewCreateResponse> createReview(
             @RequestBody @Valid ReviewCreateRequest request,
             @PathVariable Long storeId,
-            @RequestHeader Long memberId
-            ) {
+            @RequestHeader Long memberId) {
+
+        log.info("reviewImageList = {}", request.imageUrl());
 
         Review newReview = storeCommandService.createReview(memberId, storeId, request);
-        List<ReviewImage> reviewImageList = storeCommandService.createReviewImage(newReview, request);
 
-        return ApiResponse.onSuccess(ReviewCreateResponse.from(newReview.getId(), reviewImageList));
+        return ApiResponse.onSuccess(ReviewCreateResponse.of(newReview));
     }
 
     @PostMapping("/{storeId}/mission")
