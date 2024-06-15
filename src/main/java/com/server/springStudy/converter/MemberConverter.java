@@ -1,7 +1,6 @@
 package com.server.springStudy.converter;
 
 import com.server.springStudy.domain.entity.Member;
-import com.server.springStudy.domain.enums.Gender;
 import com.server.springStudy.web.dto.member.MemberJoinRequest;
 
 import java.util.ArrayList;
