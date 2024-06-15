@@ -22,7 +22,7 @@ public class StoreRestController {
     @PostMapping("/{storeId}")
     public ApiResponse<ReviewCreateResponse> createReview(
             @RequestBody @Valid ReviewCreateRequest request,
-            @PathVariable Long storeId,
+            @PathVariable @Valid Long storeId,
             @RequestHeader Long memberId) {
 
         log.info("reviewImageList = {}", request.imageUrl());
