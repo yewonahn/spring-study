@@ -31,9 +31,12 @@ public class CategoriesExistValidator implements ConstraintValidator<ExistCatego
         boolean isValid = values.stream()
                 .allMatch(foodCategoryRepository::existsById);
 
+        // 커스텀 Validator 에서 에러 메시지 설정하기 위해 사용
         if (!isValid) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(FOOD_CATEGORY_NOT_FOUND.toString()).addConstraintViolation();
+            // 유효성 검증에 실패하면 기본적으로 @Constraint 애노테이션의 message 속성에 지정된 기본 메시지가 사용됨
+            // 커스텀 메시지 설정하고 싶은 경우 이 기본 메시지 비활성화
+            context.disableDefaultConstraintViolation();    // : 기본적으로 제공되는 ConstraintViolation 메시지 비활성화
+            context.buildConstraintViolationWithTemplate(FOOD_CATEGORY_NOT_FOUND.toString()).addConstraintViolation();  // 새로운 ConstraintViolation 메시지 빌드하고 추가하는 역할
         }
 
         return isValid;

@@ -1,4 +1,4 @@
-package com.server.springStudy.service.TempService;
+package com.server.springStudy.service.tempService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.server.springStudy.service.TempService;
+package com.server.springStudy.service.tempService;
 
 import com.server.springStudy.apiPayload.code.status.ErrorStatus;
 import com.server.springStudy.apiPayload.exception.handler.TempHandler;
