@@ -2,16 +2,12 @@ package com.server.springStudy.service.storeService;
 
 import com.server.springStudy.apiPayload.exception.handler.MemberHandler;
 import com.server.springStudy.apiPayload.exception.handler.StoreHandler;
+import com.server.springStudy.converter.MissionConverter;
 import com.server.springStudy.converter.ReviewConverter;
 import com.server.springStudy.converter.ReviewImageConverter;
-import com.server.springStudy.domain.entity.Member;
-import com.server.springStudy.domain.entity.Review;
-import com.server.springStudy.domain.entity.ReviewImage;
-import com.server.springStudy.domain.entity.Store;
-import com.server.springStudy.repository.MemberRepository;
-import com.server.springStudy.repository.ReviewImageRepository;
-import com.server.springStudy.repository.ReviewRepository;
-import com.server.springStudy.repository.StoreRepository;
+import com.server.springStudy.domain.entity.*;
+import com.server.springStudy.repository.*;
+import com.server.springStudy.web.dto.store.MissionCreateRequest;
 import com.server.springStudy.web.dto.store.ReviewCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +27,7 @@ public class StoreCommandServiceImpl implements StoreCommandService {
     private final MemberRepository memberRepository;
     private final ReviewRepository reviewRepository;
     private final ReviewImageRepository reviewImageRepository;
+    private final MissionRepository missionRepository;
 
     @Override
     public Review createReview(Long memberId, Long storeId, ReviewCreateRequest request) {
@@ -60,5 +57,18 @@ public class StoreCommandServiceImpl implements StoreCommandService {
         });
 
         return reviewImageList;
+    }
+
+    @Override
+    public Mission createMission(Long storeId, MissionCreateRequest request) {
+
+        Mission newMission = MissionConverter.toMission(request);
+
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new StoreHandler(STORE_NOT_FOUND));
+
+        newMission.setStore(store);
+
+        return missionRepository.save(newMission);
     }
 }
