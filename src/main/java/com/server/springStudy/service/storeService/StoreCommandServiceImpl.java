@@ -10,6 +10,7 @@ import com.server.springStudy.repository.*;
 import com.server.springStudy.web.dto.store.MissionCreateRequest;
 import com.server.springStudy.web.dto.store.ReviewCreateRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import static com.server.springStudy.apiPayload.code.status.ErrorStatus.MEMBER_NOT_FOUND;
 import static com.server.springStudy.apiPayload.code.status.ErrorStatus.STORE_NOT_FOUND;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -26,7 +28,6 @@ public class StoreCommandServiceImpl implements StoreCommandService {
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
     private final ReviewRepository reviewRepository;
-    private final ReviewImageRepository reviewImageRepository;
     private final MissionRepository missionRepository;
 
     @Override
@@ -41,8 +42,8 @@ public class StoreCommandServiceImpl implements StoreCommandService {
         Review newReview = ReviewConverter.toCreateReview(member, store, request);
 
         List<ReviewImage> reviewImageList = ReviewImageConverter.toReviewImageList(request.imageUrl());
-        reviewImageList.forEach(reviewImage -> {reviewImage.setReview(newReview);
-        });
+        log.info("reviewImageList = {}", reviewImageList);
+        reviewImageList.forEach(reviewImage -> {reviewImage.setReview(newReview);});
 
         return reviewRepository.save(newReview);
     }
