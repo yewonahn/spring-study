@@ -3,11 +3,9 @@ package com.server.springStudy.web.controller;
 import com.server.springStudy.apiPayload.ApiResponse;
 import com.server.springStudy.domain.entity.Mission;
 import com.server.springStudy.domain.entity.Review;
+import com.server.springStudy.domain.mapping.MemberMission;
 import com.server.springStudy.service.storeService.StoreCommandService;
-import com.server.springStudy.web.dto.store.MissionCreateRequest;
-import com.server.springStudy.web.dto.store.MissionCreateResponse;
-import com.server.springStudy.web.dto.store.ReviewCreateRequest;
-import com.server.springStudy.web.dto.store.ReviewCreateResponse;
+import com.server.springStudy.web.dto.store.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,10 +35,22 @@ public class StoreRestController {
     @PostMapping("/{storeId}/mission")
     public ApiResponse<MissionCreateResponse> createMission(
             @RequestBody @Valid MissionCreateRequest request,
-            @PathVariable Long storeId
-    ) {
+            @PathVariable Long storeId) {
+
         Mission newMission = storeCommandService.createMission(storeId, request);
 
         return ApiResponse.onSuccess(new MissionCreateResponse(newMission.getId()));
+    }
+
+    @PostMapping("/{storeId}/mission/{missionId}")
+    public ApiResponse<MemberMissionCreateResponse> createMemberMission(
+            @RequestBody @Valid MemberMissionCreateRequest request,
+            @PathVariable Long storeId,
+            @PathVariable Long missionId,
+            @RequestHeader Long memberId) {
+
+        MemberMission newMemberMission = storeCommandService.createMemberMission(memberId, storeId, missionId, request);
+
+        return ApiResponse.onSuccess(new MemberMissionCreateResponse(newMemberMission.getId()));
     }
 }

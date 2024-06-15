@@ -6,9 +6,13 @@ import com.server.springStudy.domain.entity.Mission;
 import com.server.springStudy.domain.enums.MissionStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
+@DynamicUpdate
+@DynamicInsert
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -27,6 +31,7 @@ public class MemberMission extends BaseEntity {
     private Mission mission;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ONGOING'")
     private MissionStatus missionStatus;
 
 }
