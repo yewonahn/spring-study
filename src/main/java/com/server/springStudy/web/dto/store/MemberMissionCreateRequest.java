@@ -1,12 +1,13 @@
 package com.server.springStudy.web.dto.store;
 
 import com.server.springStudy.validation.annotation.AlreadyExistMemberMission;
-import org.springframework.lang.NonNull;
+import com.server.springStudy.validation.annotation.ExistMember;
+import com.server.springStudy.validation.annotation.ExistStore;
 
 @AlreadyExistMemberMission
 public record MemberMissionCreateRequest(
-        @NonNull Long memberId,
-        @NonNull Long storeId,
-        @NonNull Long missionId
+        @ExistMember Long memberId,
+        @ExistStore Long storeId,
+        Long missionId
 ) {
 }

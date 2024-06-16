@@ -4,7 +4,7 @@ import com.server.springStudy.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +26,9 @@ public class Store extends BaseEntity {
 
     private Float score;
 
-    private LocalDate open;
+    private LocalDateTime open;
 
-    private LocalDate close;
+    private LocalDateTime close;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Mission> missionList = new ArrayList<>();
