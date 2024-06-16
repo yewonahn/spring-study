@@ -8,6 +8,7 @@ import com.server.springStudy.service.storeService.StoreCommandService;
 import com.server.springStudy.validation.annotation.ExistMember;
 import com.server.springStudy.validation.annotation.ExistStore;
 import com.server.springStudy.web.dto.store.*;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,5 +55,11 @@ public class StoreRestController {
         MemberMission newMemberMission = storeCommandService.createMemberMission(memberId, storeId, missionId, request);
 
         return ApiResponse.onSuccess(new MemberMissionCreateResponse(newMemberMission.getId()));
+    }
+
+    @GetMapping("/{storeId}/reviews")
+    @Operation(summary = "특정 가게의 리뷰 목록 조회 API",description = "특정 가게의 리뷰들의 목록을 조회하는 API이며, 페이징을 포함합니다. query String 으로 page 번호를 주세요")
+    public ApiResponse<ReviewPreviewListResponse> getReviewList(@ExistStore @PathVariable(name = "storeId") Long storeId){
+        return null;
     }
 }
