@@ -40,7 +40,6 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
                 .orElseThrow(() -> new RuntimeException("ERROR : ConstraintViolationException 추출 도중 에러 발생"));
 
         log.info("예외 처리 : validation");
-        e.printStackTrace();
 
         // (추출한 메시지를 사용하여 사용자 정의 응답을 생성)
         return handleExceptionInternalConstraint(e, ErrorStatus.valueOf(errorMessage), HttpHeaders.EMPTY,request);
@@ -71,7 +70,6 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
                         });
 
         log.info("예외 처리 : handleMethodArgumentNotValid");
-        e.printStackTrace();
 
         // 수집된 에러 메시지들을 포함하여 사용자 정의 응답 생성
         return handleExceptionInternalArgs(
@@ -83,7 +81,6 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> exception(Exception e, WebRequest request) {
 
         log.info("예외 처리 : exception");
-        e.printStackTrace();
 
         return handleExceptionInternalFalse(e, ErrorStatus._INTERNAL_SERVER_ERROR, HttpHeaders.EMPTY, ErrorStatus._INTERNAL_SERVER_ERROR.getHttpStatus(),request, e.getMessage());
     }
@@ -109,7 +106,6 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
         ApiResponse<Object> body = ApiResponse.onFailure(ErrorStatus._BAD_REQUEST.getCode(), errorMessage, null);
 
         log.info("예외 처리 : handleHttpMessageNotReadable");
-        e.printStackTrace();
 
         return handleExceptionInternal(e, body, HttpHeaders.EMPTY, ErrorStatus._BAD_REQUEST.getHttpStatus(), request);
     }
