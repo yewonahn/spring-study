@@ -89,4 +89,9 @@ public class TempRestController {
         tempQueryService.CheckFlag(flag);
         return ApiResponse.onSuccess(TempConverter.toTempExceptionDTO(flag));
     }
+
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "I'm healthy!";
+    }
 }
