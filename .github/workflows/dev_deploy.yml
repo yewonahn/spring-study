@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2 # 현재 디렉토리인 .github의 위치(현재 최상단)에 있는 파일들 모두 build gradle의 대상이 됨
 
       - name: Set up JDK 17
-        uses: actions/set-up-java@v3
+        uses: actions/setup-java@v3
         with:
           java-version: 17  # (5) 자바 설치
           distribution: 'adopt'
