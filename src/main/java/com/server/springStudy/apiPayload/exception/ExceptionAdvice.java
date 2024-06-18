@@ -57,23 +57,24 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
         Map<String, String> errors = new LinkedHashMap<>();
 
         // 에러 필드와 메세지 추가해주기 위해
-        e.getBindingResult().getFieldErrors().stream()
-                .forEach(
-                        fieldError -> {
-                            String fieldName = fieldError.getField();
-                            String errorMessage = Optional.ofNullable(fieldError.getDefaultMessage()).orElse("");
-                            errors.merge(
-                                    fieldName,
-                                    errorMessage,
-                                    (existingErrorMessage, newErrorMessage) ->
-                                            existingErrorMessage + ", " + newErrorMessage);
-                        });
+        e.getBindingResult().getFieldErrors().stream().forEach(fieldError -> {
+            String fieldName = fieldError.getField();
+            String errorMessage = Optional.ofNullable(fieldError.getDefaultMessage()).orElse("");
+            errors.merge(fieldName, errorMessage, (existingErrorMessage, newErrorMessage) -> existingErrorMessage + ", " + newErrorMessage);
+        });
+
+        // 타입 에러 처리 (global 에러)
+        e.getBindingResult().getGlobalErrors().forEach(globalError -> {
+            String objectName = globalError.getObjectName();
+            String errorMessage = globalError.getDefaultMessage();
+            errors.put(objectName, errorMessage);
+        });
+
 
         log.info("예외 처리 : handleMethodArgumentNotValid");
 
         // 수집된 에러 메시지들을 포함하여 사용자 정의 응답 생성
-        return handleExceptionInternalArgs(
-                e, HttpHeaders.EMPTY, ErrorStatus.valueOf("_BAD_REQUEST"), request, errors);
+        return handleExceptionInternalArgs(e, HttpHeaders.EMPTY, ErrorStatus.valueOf("_BAD_REQUEST"), request, errors);
     }
 
     /** 예외 처리 메서드 : 모든 종류의 예외 처리 */
