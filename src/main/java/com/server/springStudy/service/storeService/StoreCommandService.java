@@ -6,9 +6,10 @@ import com.server.springStudy.domain.mapping.MemberMission;
 import com.server.springStudy.web.dto.store.MemberMissionCreateRequest;
 import com.server.springStudy.web.dto.store.MissionCreateRequest;
 import com.server.springStudy.web.dto.store.ReviewCreateRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface StoreCommandService {
-    Review createReview(Long memberId, Long storeId, ReviewCreateRequest request);
+    Review createReview(Long memberId, Long storeId, ReviewCreateRequest request, MultipartFile image);
 
     Mission createMission(Long storeId, MissionCreateRequest request);
 

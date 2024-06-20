@@ -21,3 +21,17 @@ spring:
       enabled: true
       maxFileSize: 200MB
       maxRequestSize: 300MB
+
+cloud:
+    aws:
+      s3:
+        bucket: spring-study-s3
+        path:
+          review: review
+      region:
+        static: ap-northeast-2
+      stack:
+        auto: false
+      credentials:
+        accessKey: ${AWS_ACCESS_KEY_ID}
+        secretKey: ${AWS_SECRET_ACCESS_KEY}

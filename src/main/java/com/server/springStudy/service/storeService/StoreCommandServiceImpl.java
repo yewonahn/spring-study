@@ -3,6 +3,7 @@ package com.server.springStudy.service.storeService;
 import com.server.springStudy.apiPayload.exception.handler.MemberHandler;
 import com.server.springStudy.apiPayload.exception.handler.MissionHandler;
 import com.server.springStudy.apiPayload.exception.handler.StoreHandler;
+import com.server.springStudy.aws.s3.AmazonS3Manager;
 import com.server.springStudy.converter.MemberMissionConverter;
 import com.server.springStudy.converter.MissionConverter;
 import com.server.springStudy.converter.ReviewConverter;
@@ -17,8 +18,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.server.springStudy.apiPayload.code.status.ErrorStatus.*;
 
@@ -33,9 +36,12 @@ public class StoreCommandServiceImpl implements StoreCommandService {
     private final ReviewRepository reviewRepository;
     private final MissionRepository missionRepository;
     private final MemberMissionRepository memberMissionRepository;
+    private final AmazonS3Manager s3Manager;
+    private final UuidRepository uuidRepository;
+    private final ReviewImageRepository reviewImageRepository;
 
     @Override
-    public Review createReview(Long memberId, Long storeId, ReviewCreateRequest request) {
+    public Review createReview(Long memberId, Long storeId, ReviewCreateRequest request, MultipartFile image) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberHandler(MEMBER_NOT_FOUND));
@@ -45,9 +51,17 @@ public class StoreCommandServiceImpl implements StoreCommandService {
 
         Review newReview = ReviewConverter.toCreateReview(member, store, request);
 
-        List<ReviewImage> reviewImageList = ReviewImageConverter.toReviewImageList(request.imageUrl());
-        log.info("reviewImageList = {}", reviewImageList);
-        reviewImageList.forEach(reviewImage -> {reviewImage.setReview(newReview);});
+        String uuid = UUID.randomUUID().toString();
+        Uuid savedUuid = uuidRepository.save(Uuid.builder()
+                .uuid(uuid).build());
+
+        String pictureUrl = s3Manager.uploadFile(s3Manager.generateReviewKeyName(savedUuid), image);
+
+        reviewImageRepository.save(ReviewImageConverter.toReviewImage(pictureUrl, newReview));
+
+        // List<ReviewImage> reviewImageList = ReviewImageConverter.toReviewImageList(request.imageUrl());
+        // log.info("reviewImageList = {}", reviewImageList);
+        // reviewImageList.forEach(reviewImage -> {reviewImage.setReview(newReview);});
 
         return reviewRepository.save(newReview);
     }

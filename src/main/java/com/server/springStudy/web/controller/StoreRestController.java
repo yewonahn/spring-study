@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @Validated
@@ -23,13 +26,14 @@ public class StoreRestController {
 
     private final StoreCommandService storeCommandService;
 
-    @PostMapping("/{storeId}")
+    @PostMapping(value = "/{storeId}", consumes = "multipart/form-data")
     public ApiResponse<ReviewCreateResponse> createReview(
-            @RequestBody @Valid ReviewCreateRequest request,
+            @RequestPart(value = "review") @Valid ReviewCreateRequest request,
+            @RequestPart(value = "file", required = false) MultipartFile image,
             @ExistStore @PathVariable(name = "storeId") Long storeId,
             @ExistMember @RequestParam(name = "memberId")  Long memberId) {
 
-        Review newReview = storeCommandService.createReview(memberId, storeId, request);
+        Review newReview = storeCommandService.createReview(memberId, storeId, request, image);
 
         return ApiResponse.onSuccess(ReviewCreateResponse.of(newReview));
     }

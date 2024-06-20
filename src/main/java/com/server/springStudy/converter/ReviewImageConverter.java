@@ -1,5 +1,6 @@
 package com.server.springStudy.converter;
 
+import com.server.springStudy.domain.entity.Review;
 import com.server.springStudy.domain.entity.ReviewImage;
 
 import java.util.List;
@@ -13,5 +14,12 @@ public class ReviewImageConverter {
                                 .imageUrl(imageUrl)
                                 .build()
                         ).toList();
+    }
+
+    public static ReviewImage toReviewImage(String imageUrl, Review review) {
+        return ReviewImage.builder()
+                .imageUrl(imageUrl)
+                .review(review)
+                .build();
     }
 }
